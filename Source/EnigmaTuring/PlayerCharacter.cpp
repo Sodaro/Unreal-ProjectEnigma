@@ -55,8 +55,8 @@ void APlayerCharacter::Tick(float DeltaTime)
 
 void APlayerCharacter::Interact()
 {
-	if (GEngine)
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("click")));
+	/*if (GEngine)
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("click")));*/
 
 	FHitResult hit;
 	FVector startPos = Camera->GetComponentLocation();
@@ -64,7 +64,6 @@ void APlayerCharacter::Interact()
 
 
 	UWorld* world = GetWorld();
-	UKismetSystemLibrary::DrawDebugLine(world, startPos, endPos, FColor::Magenta, 10.f, 2.f);
 
 	world->LineTraceSingleByChannel(hit, startPos, endPos, ECC_WorldStatic);
 	if (hit.bBlockingHit)
@@ -74,28 +73,7 @@ void APlayerCharacter::Interact()
 
 		if (hit.Actor.Get()->IsA<AInteractableObject>())
 		{
-			if (GEngine)
-				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Magenta, TEXT("hit:" + hit.Actor.Get()->GetName()));
-
-			FLinearColor color;
-			switch (ColorIndex)
-			{
-			case 0:
-				color = FLinearColor::Blue;
-				break;
-			case 1:
-				color = FLinearColor::Yellow;
-				
-				break;
-			case 2:
-				color = FLinearColor::Green;
-				break;
-			case 3:
-				color = FLinearColor::Red;
-				break;
-			}
-			++ColorIndex %= 4;
-			Cast<AInteractableObject>(hit.Actor)->ChangeColor(color);
+			Cast<AInteractableObject>(hit.Actor)->Interact();
 		}
 	}
 

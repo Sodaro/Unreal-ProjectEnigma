@@ -8,12 +8,13 @@
 
 //class UMaterialInstanceDynamic;
 class UStaticMeshComponent;
+class UTextRenderComponent;
 
 UCLASS()
 class ENIGMATURING_API AInteractableObject : public AActor
 {
 	GENERATED_BODY()
-	
+
 public:	
 	// Sets default values for this actor's properties
 	AInteractableObject();
@@ -21,12 +22,11 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
+	
 public:
-	UMaterialInstanceDynamic* MaterialInstance;
 
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* Mesh;
-	
-	void ChangeColor(FLinearColor color);
+
+	virtual void Interact();
 };

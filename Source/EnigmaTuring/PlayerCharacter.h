@@ -29,11 +29,6 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-
-	//void HandleRotation(FVector vector);
-
-	int ColorIndex = 0;
-
 	UPROPERTY(EditAnywhere)
 	float RotationSpeed = 100.f;
 
