@@ -2,7 +2,7 @@
 
 
 #include "InteractableObject.h"
-#include <Components/StaticMeshComponent.h>
+#include "Components/StaticMeshComponent.h"
 // Sets default values
 AInteractableObject::AInteractableObject()
 {
