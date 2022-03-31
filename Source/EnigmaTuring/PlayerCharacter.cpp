@@ -60,7 +60,7 @@ void APlayerCharacter::Interact()
 
 	FHitResult hit;
 	FVector startPos = Camera->GetComponentLocation();
-	FVector endPos = startPos + Camera->GetForwardVector()*1000.f;
+	FVector endPos = startPos + Camera->GetForwardVector()*5000.f;
 
 
 	UWorld* world = GetWorld();
