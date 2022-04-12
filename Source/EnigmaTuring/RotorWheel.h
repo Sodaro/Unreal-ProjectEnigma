@@ -57,6 +57,9 @@ public:
 	UPROPERTY(EditAnywhere)
 	Cipher Type;
 
+	UPROPERTY(EditInstanceOnly)
+	int RingSettingOffset = 0;
+
 	UPROPERTY(EditAnywhere)
 	ARotorWheel* PrevWheel;
 
