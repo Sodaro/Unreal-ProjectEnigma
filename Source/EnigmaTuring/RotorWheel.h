@@ -40,12 +40,15 @@ class ENIGMATURING_API ARotorWheel : public AInteractableObject
 		'Y','R','U','H','Q','S','L','D','P','X','N','G','O','K','M','I','E','B','F','Z','C','W','V','J','A','T'
 	};
 	TCHAR* ActiveArr;
-	int CurrentLetterIndex = 0;
-	int Offset = 0;
-
 	TCHAR NotchPos = 'Q';
+	int CurrentLetterIndex = 0;
+	int CurrentRotationOffset = 0;
 
 	FString DisplayedText = "A";
+
+	void ChangeDisplayName();
+	void DoRotation();
+
 protected:
 	virtual void BeginPlay() override;
 public:
@@ -58,7 +61,7 @@ public:
 	Cipher Type;
 
 	UPROPERTY(EditInstanceOnly)
-	int RingSettingOffset = 0;
+	int32 RingSettingOffset = 0;
 
 	UPROPERTY(EditAnywhere)
 	ARotorWheel* PrevWheel;
@@ -68,5 +71,6 @@ public:
 
 	virtual void Interact() override;
 	void Rotate();
+	void Rotate(TCHAR Input);
 	void Encode(int alphabetIndex, bool reverse);
 };

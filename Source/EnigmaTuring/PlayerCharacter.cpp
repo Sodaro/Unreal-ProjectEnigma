@@ -6,6 +6,7 @@
 #include <Components/StaticMeshComponent.h>
 #include <Kismet/KismetSystemLibrary.h>
 #include "InteractableObject.h"
+#include "RotorWheel.h"
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
@@ -79,6 +80,24 @@ void APlayerCharacter::Interact()
 
 }
 
+void APlayerCharacter::EncodeLetter(FKey Key)
+{
+	FString KeyName = Key.GetFName().ToString();
+	if (KeyName.Len() > 1)
+		return;
+	//if (GEngine)
+	//	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Letter: %s"), *Name));
+	TCHAR Letter = KeyName[0];
+	for (int i = 0; i < 26; i++)
+	{
+		if (Letter == 'A' + i)
+		{
+			FirstWheel->Rotate(Letter);
+			break;
+		}
+	}
+}
+
 // Called to bind functionality to input
 void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
@@ -86,4 +105,5 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	InputComponent->BindAction("Action", IE_Pressed, this, &APlayerCharacter::Interact);
 	InputComponent->BindAxis("Look X");
 	InputComponent->BindAxis("Look Y");
+	InputComponent->BindAction("AnyKey", IE_Pressed, this, &APlayerCharacter::EncodeLetter);
 }

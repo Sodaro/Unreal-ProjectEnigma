@@ -7,6 +7,7 @@
 #include "PlayerCharacter.generated.h"
 class UCameraComponent;
 class UStaticMeshComponent;
+class ARotorWheel;
 
 UCLASS()
 class ENIGMATURING_API APlayerCharacter : public APawn
@@ -14,6 +15,7 @@ class ENIGMATURING_API APlayerCharacter : public APawn
 	GENERATED_BODY()
 
 	void Interact();
+	void EncodeLetter(FKey Key);
 public:
 	// Sets default values for this pawn's properties
 	APlayerCharacter();
@@ -40,6 +42,9 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* Mesh;
+
+	UPROPERTY(EditInstanceOnly)
+	ARotorWheel* FirstWheel;
 
 	UCameraComponent* Camera;
 
