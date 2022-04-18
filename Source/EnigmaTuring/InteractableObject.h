@@ -9,6 +9,7 @@
 //class UMaterialInstanceDynamic;
 class UStaticMeshComponent;
 class UTextRenderComponent;
+class UBoxComponent;
 
 UCLASS()
 class ENIGMATURING_API AInteractableObject : public AActor
@@ -27,6 +28,9 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* Mesh;
+
+	//UPROPERTY(EditDefaultsOnly)
+	//UBoxComponent* Box;
 
 	virtual void Interact();
 };

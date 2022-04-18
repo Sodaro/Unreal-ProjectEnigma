@@ -3,12 +3,14 @@
 
 #include "InteractableObject.h"
 #include "Components/StaticMeshComponent.h"
+#include "Components/BoxComponent.h"
 // Sets default values
 AInteractableObject::AInteractableObject()
 {
 	PrimaryActorTick.bCanEverTick = false;
 
 	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("RootComponent"));
+
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComponent"));
 	Mesh->SetupAttachment(RootComponent);
 }

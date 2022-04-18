@@ -7,7 +7,7 @@
 #include "PlayerCharacter.generated.h"
 class UCameraComponent;
 class UStaticMeshComponent;
-class ARotorWheel;
+class AEnigmaMachine;
 
 UCLASS()
 class ENIGMATURING_API APlayerCharacter : public APawn
@@ -44,7 +44,7 @@ public:
 	UStaticMeshComponent* Mesh;
 
 	UPROPERTY(EditInstanceOnly)
-	ARotorWheel* FirstWheel;
+	AEnigmaMachine* EnigmaMachine;
 
 	UCameraComponent* Camera;
 

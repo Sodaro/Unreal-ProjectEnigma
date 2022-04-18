@@ -23,7 +23,6 @@ void ARotorWheel::DoRotation()
 	FQuat Rotation = FQuat::MakeFromEuler(FVector{ 0, Amount, 0 });
 	Mesh->AddRelativeRotation(Rotation);
 	ChangeDisplayName();
-
 }
 
 // Called when the game starts or when spawned
@@ -71,21 +70,16 @@ void ARotorWheel::Rotate()
 
 void ARotorWheel::Rotate(TCHAR Input)
 {
-	for (int i = 0; i < 14; i++)
+	DoRotation();
+
+	Encode(Input - 'A', false);
+	if (CurrentRotationOffset + 'A' == NotchPos)
 	{
-		DoRotation();
-
-		Encode(Input - 'A', false);
-		if (CurrentRotationOffset + 'A' == NotchPos)
-		{
-			NextWheel->Rotate();
-		}
+		NextWheel->Rotate();
 	}
-
-
 }
 
-void ARotorWheel::Encode(int AlphabetIndex, bool reverse)
+int32 ARotorWheel::Encode(int AlphabetIndex, bool reverse)
 {
 	int CipherLetterIndex = (AlphabetIndex - RingSettingOffset + CurrentRotationOffset) % 26;
 	TCHAR Letter = Alphabet[CipherLetterIndex];
@@ -93,7 +87,7 @@ void ARotorWheel::Encode(int AlphabetIndex, bool reverse)
 	
 	if (reverse)
 	{
-		//make this not a loop, use pairs or dicts
+		//TODO: make this not a loop, use pairs or dicts
 		for (int i = 0; i < 26; i++)
 		{
 			if (ActiveArr[i] == Letter)
@@ -102,25 +96,40 @@ void ARotorWheel::Encode(int AlphabetIndex, bool reverse)
 				break;
 			}
 		}
+		
 	}
 
 	AlphabetIndex = CipherLetter - 'A' - CurrentRotationOffset + RingSettingOffset;
-
 	
 	//alphabetIndex -= Offset;
 	if (AlphabetIndex < 0)
 		AlphabetIndex += 26;
+
 	if (NextWheel != nullptr && reverse == false)
 	{
-		NextWheel->Encode(AlphabetIndex, false);
+		AlphabetIndex = NextWheel->Encode(AlphabetIndex, false);
 	}
 	else if (PrevWheel != nullptr)
 	{
-		PrevWheel->Encode(AlphabetIndex, true);
+		AlphabetIndex = PrevWheel->Encode(AlphabetIndex, true);
 	}
 	else
 	{
-		if (GEngine)
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Letter:%c"), Alphabet[AlphabetIndex]));
+		return AlphabetIndex;
+		/*if (GEngine)
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Letter:%c"), Alphabet[AlphabetIndex]));*/
 	}
+	return AlphabetIndex;
+}
+
+int32 ARotorWheel::EncryptLetter(int32 Index)
+{
+	DoRotation();
+
+	int32 RetVal = Encode(Index, false);
+	if (CurrentRotationOffset + 'A' == NotchPos)
+	{
+		NextWheel->Rotate();
+	}
+	return RetVal;
 }

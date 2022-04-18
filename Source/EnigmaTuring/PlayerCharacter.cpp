@@ -6,7 +6,7 @@
 #include <Components/StaticMeshComponent.h>
 #include <Kismet/KismetSystemLibrary.h>
 #include "InteractableObject.h"
-#include "RotorWheel.h"
+#include "EnigmaMachine.h"
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
@@ -59,22 +59,22 @@ void APlayerCharacter::Interact()
 	/*if (GEngine)
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("click")));*/
 
-	FHitResult hit;
-	FVector startPos = Camera->GetComponentLocation();
-	FVector endPos = startPos + Camera->GetForwardVector()*5000.f;
+	FHitResult HitResult;
+	FVector StartPos = Camera->GetComponentLocation();
+	FVector EndPos = StartPos + Camera->GetForwardVector()*5000.f;
 
 
 	UWorld* world = GetWorld();
 
-	world->LineTraceSingleByChannel(hit, startPos, endPos, ECC_WorldStatic);
-	if (hit.bBlockingHit)
+	world->LineTraceSingleByChannel(HitResult, StartPos, EndPos, ECC_WorldStatic);
+	if (HitResult.bBlockingHit)
 	{
-		if (hit.Actor.IsValid() == false)
+		if (HitResult.Actor.IsValid() == false)
 			return;
 
-		if (hit.Actor.Get()->IsA<AInteractableObject>())
+		if (HitResult.Actor.Get()->IsA<AInteractableObject>())
 		{
-			Cast<AInteractableObject>(hit.Actor)->Interact();
+			Cast<AInteractableObject>(HitResult.Actor)->Interact();
 		}
 	}
 
@@ -85,14 +85,13 @@ void APlayerCharacter::EncodeLetter(FKey Key)
 	FString KeyName = Key.GetFName().ToString();
 	if (KeyName.Len() > 1)
 		return;
-	//if (GEngine)
-	//	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Letter: %s"), *Name));
+
 	TCHAR Letter = KeyName[0];
 	for (int i = 0; i < 26; i++)
 	{
 		if (Letter == 'A' + i)
 		{
-			FirstWheel->Rotate(Letter);
+			EnigmaMachine->EncodeLetter(i);
 			break;
 		}
 	}

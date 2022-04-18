@@ -72,5 +72,6 @@ public:
 	virtual void Interact() override;
 	void Rotate();
 	void Rotate(TCHAR Input);
-	void Encode(int alphabetIndex, bool reverse);
+	int32 Encode(int alphabetIndex, bool reverse);
+	int32 EncryptLetter(int32 Index);
 };
