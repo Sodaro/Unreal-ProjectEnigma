@@ -91,6 +91,7 @@ void APlayerCharacter::EncodeLetter(FKey Key)
 	{
 		if (Letter == 'A' + i)
 		{
+			EnigmaMachine->PressKey(i);
 			EnigmaMachine->EncodeLetter(i);
 			break;
 		}

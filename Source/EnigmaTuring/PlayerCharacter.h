@@ -46,6 +46,7 @@ public:
 	UPROPERTY(EditInstanceOnly)
 	AEnigmaMachine* EnigmaMachine;
 
+	UPROPERTY(EditAnywhere)
 	UCameraComponent* Camera;
 
 };

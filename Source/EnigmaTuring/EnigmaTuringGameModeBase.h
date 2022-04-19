@@ -6,9 +6,8 @@
 #include "GameFramework/GameModeBase.h"
 #include "EnigmaTuringGameModeBase.generated.h"
 
-/**
- * 
- */
+class UTextOutputWidget;
+
 UCLASS()
 class ENIGMATURING_API AEnigmaTuringGameModeBase : public AGameModeBase
 {
