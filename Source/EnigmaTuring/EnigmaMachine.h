@@ -12,6 +12,14 @@ class AMachineKey;
 
 class UMachineTextOutput;
 
+UENUM(BlueprintType)
+enum RingPosition
+{
+	LEFT UMETA(DisplayName = "LEFT"),
+	MID UMETA(DisplayName = "MID"),
+	RIGHT UMETA(DisplayName = "RIGHT")
+};
+
 USTRUCT()
 struct FKeyLampPair
 {
@@ -33,7 +41,13 @@ public:
 	void BeginPlay() override;
 
 	UPROPERTY(EditInstanceOnly)
-	ARotorWheel* FirstWheel;
+	ARotorWheel* RightWheel;
+
+	UPROPERTY(EditInstanceOnly)
+	ARotorWheel* MidWheel;
+
+	UPROPERTY(EditInstanceOnly)
+	ARotorWheel* LeftWheel;
 
 	UPROPERTY(EditInstanceOnly)
 	TMap<FString, FKeyLampPair> KeyLampPairs;
@@ -46,6 +60,12 @@ public:
 	TSubclassOf<UMachineTextOutput> OutputWidgetClass;
 
 	UMachineTextOutput* OutputWidget;
+
+	UFUNCTION(BlueprintCallable)
+	void ChangeRingOffset(RingPosition RingPos, int32 Offset);
+
+	UFUNCTION(BlueprintCallable)
+	void SetRingPosition(RingPosition RingPos, int32 Position);
 
 	void PressKey(int32 AlphabetIndex);
 	int32 EncodeLetter(int32 AlphabetIndex);

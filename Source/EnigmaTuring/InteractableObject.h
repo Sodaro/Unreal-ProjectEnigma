@@ -30,8 +30,5 @@ public:
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* Mesh;
 
-	//UPROPERTY(EditDefaultsOnly)
-	//UBoxComponent* Box;
-
 	virtual void Interact();
 };

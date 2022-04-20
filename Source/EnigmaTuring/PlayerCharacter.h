@@ -46,6 +46,9 @@ public:
 	UPROPERTY(EditInstanceOnly)
 	AEnigmaMachine* EnigmaMachine;
 
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	AEnigmaMachine* GetEnigmaMachine() { return EnigmaMachine; };
+
 	UPROPERTY(EditAnywhere)
 	UCameraComponent* Camera;
 

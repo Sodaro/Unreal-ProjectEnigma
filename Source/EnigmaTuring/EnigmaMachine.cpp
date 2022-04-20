@@ -13,6 +13,52 @@ void AEnigmaMachine::BeginPlay()
 	OutputWidget->AddToViewport();
 }
 
+void AEnigmaMachine::ChangeRingOffset(RingPosition RingPos, int32 Offset)
+{
+	if (Offset > 25)
+		Offset = 25;
+	else if (Offset < 0)
+		Offset = 0;
+
+	switch (RingPos)
+	{
+	case RingPosition::LEFT:
+		LeftWheel->RingSettingOffset = Offset;
+		break;
+	case RingPosition::MID:
+		MidWheel->RingSettingOffset = Offset;
+		break;
+	case RingPosition::RIGHT:
+		RightWheel->RingSettingOffset = Offset;
+		break;
+	default:
+		break;
+	}
+}
+
+void AEnigmaMachine::SetRingPosition(RingPosition RingPos, int32 Position)
+{
+	if (Position > 25)
+		Position = 25;
+	else if (Position < 0)
+		Position = 0;
+
+	switch (RingPos)
+	{
+	case RingPosition::LEFT:
+		LeftWheel->SetRingRotationOffset(Position);
+		break;
+	case RingPosition::MID:
+		MidWheel->SetRingRotationOffset(Position);
+		break;
+	case RingPosition::RIGHT:
+		RightWheel->SetRingRotationOffset(Position);
+		break;
+	default:
+		break;
+	}
+}
+
 void AEnigmaMachine::PressKey(int32 AlphabetIndex)
 {
 	FString IndexKey = "";
@@ -21,10 +67,8 @@ void AEnigmaMachine::PressKey(int32 AlphabetIndex)
 }
 int32 AEnigmaMachine::EncodeLetter(int32 AlphabetIndex)
 {
-	AlphabetIndex = FirstWheel->EncryptLetter(AlphabetIndex);
-	//if (GEngine)
-		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Letter:%c"), (TCHAR)(AlphabetIndex+'A')));
-	
+	AlphabetIndex = RightWheel->EncryptLetter(AlphabetIndex);
+
 	if (LastLampKey != "")
 	{
 		KeyLampPairs[LastLampKey].Lamp->TurnOff();

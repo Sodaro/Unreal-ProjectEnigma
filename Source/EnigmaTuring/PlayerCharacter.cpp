@@ -34,8 +34,6 @@ void APlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	//if (GEngine)
-//	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("x,y: %f %f"), horizontal, vertical));
 	float horizontal = InputComponent->GetAxisValue("Look X");
 	float vertical = InputComponent->GetAxisValue("Look Y");
 
@@ -51,7 +49,6 @@ void APlayerCharacter::Tick(float DeltaTime)
 	{
 		Camera->SetRelativeRotation(cameraRot* rotQuatCamera);
 	}
-	
 }
 
 void APlayerCharacter::Interact()

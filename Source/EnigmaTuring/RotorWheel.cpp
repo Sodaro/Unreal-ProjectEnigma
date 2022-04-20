@@ -52,11 +52,11 @@ void ARotorWheel::BeginPlay()
 	}
 }
 
-void ARotorWheel::Interact()
-{
-	Super::Interact();
-	Rotate();
-}
+//void ARotorWheel::Interact()
+//{
+//	Super::Interact();
+//	Rotate();
+//}
 
 void ARotorWheel::Rotate()
 {
@@ -132,4 +132,36 @@ int32 ARotorWheel::EncryptLetter(int32 Index)
 		NextWheel->Rotate();
 	}
 	return RetVal;
+}
+
+void ARotorWheel::SetRingRotationOffset(int32 Offset)
+{
+	if (Offset < 0)
+		Offset = 0;
+	else if (Offset >= 26)
+		Offset = 25;
+
+	CurrentRotationOffset = Offset;
+	ChangeDisplayName();
+}
+
+void ARotorWheel::ChangeRingSettingPosition(int32 Position)
+{
+	if (Position < 0)
+		Position = 0;
+	else if (Position >= 26)
+		Position = 25;
+
+	RingSettingOffset = Position;
+}
+
+void ARotorWheel::IncrementRingOffset()
+{
+	++CurrentRotationOffset %= 26;
+	ChangeDisplayName();
+}
+
+void ARotorWheel::IncrementRingSettingPosition()
+{
+	++RingSettingOffset %= 26;
 }

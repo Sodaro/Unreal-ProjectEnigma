@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "InteractableObject.h"
+#include "BlueprintInteractable.h"
 #include "RotorWheel.generated.h"
 
 UENUM(BlueprintType)
@@ -15,7 +15,7 @@ enum class Cipher : uint8 {
 };
 
 UCLASS()
-class ENIGMATURING_API ARotorWheel : public AInteractableObject
+class ENIGMATURING_API ARotorWheel : public ABlueprintInteractable
 {
 	GENERATED_BODY()
 
@@ -41,12 +41,13 @@ class ENIGMATURING_API ARotorWheel : public AInteractableObject
 	};
 	TCHAR* ActiveArr;
 	TCHAR NotchPos = 'Q';
-	int CurrentLetterIndex = 0;
-	int CurrentRotationOffset = 0;
+	int32 CurrentLetterIndex = 0;
+	int32 CurrentRotationOffset = 0;
 
 	FString DisplayedText = "A";
 
 	void ChangeDisplayName();
+	
 	void DoRotation();
 
 protected:
@@ -69,9 +70,21 @@ public:
 	UPROPERTY(EditAnywhere)
 	ARotorWheel* NextWheel;
 
-	virtual void Interact() override;
+	//virtual void Interact() override;
 	void Rotate();
 	void Rotate(TCHAR Input);
 	int32 Encode(int alphabetIndex, bool reverse);
 	int32 EncryptLetter(int32 Index);
+
+	UFUNCTION(BlueprintCallable)
+	void SetRingRotationOffset(int32 Offset);
+
+	UFUNCTION(BlueprintCallable)
+	void ChangeRingSettingPosition(int32 Position);
+
+	UFUNCTION(BlueprintCallable)
+	void IncrementRingOffset();
+
+	UFUNCTION(BlueprintCallable)
+	void IncrementRingSettingPosition();
 };
