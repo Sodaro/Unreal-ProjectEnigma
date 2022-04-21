@@ -8,6 +8,7 @@
 class UCameraComponent;
 class UStaticMeshComponent;
 class AEnigmaMachine;
+class AInteractableObject;
 
 UCLASS()
 class ENIGMATURING_API APlayerCharacter : public APawn
@@ -16,6 +17,10 @@ class ENIGMATURING_API APlayerCharacter : public APawn
 
 	void Interact();
 	void EncodeLetter(FKey Key);
+
+	void DoTrace();
+
+	bool LoggingEnabled = true;
 public:
 	// Sets default values for this pawn's properties
 	APlayerCharacter();
@@ -30,6 +35,8 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	void ToggleScreenLogging();
 
 	UPROPERTY(EditAnywhere)
 	float RotationSpeed = 100.f;
@@ -51,5 +58,7 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	UCameraComponent* Camera;
+
+	TWeakObjectPtr<AInteractableObject> HoveredInteractable;
 
 };

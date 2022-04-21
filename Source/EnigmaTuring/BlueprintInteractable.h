@@ -8,6 +8,9 @@ class ABlueprintInteractable : public AInteractableObject
 	GENERATED_BODY()
 public:
 
-	UFUNCTION(BlueprintImplementableEvent)
+	UFUNCTION(BlueprintNativeEvent)
 	void Interact() override;
+
+	UFUNCTION(BlueprintNativeEvent)
+	void Hover() override;
 };

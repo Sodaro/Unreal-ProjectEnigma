@@ -31,4 +31,5 @@ public:
 	UStaticMeshComponent* Mesh;
 
 	virtual void Interact();
+	virtual void Hover();
 };

@@ -11,6 +11,7 @@ void AMachineKey::BeginPlay()
 }
 void AMachineKey::Interact()
 {
+	//Super::Interact();
 	PlayPressAnimation(0.25f);
 	EnigmaMachine->EncodeLetter(Letter[0] - 'A');
 }
@@ -19,7 +20,6 @@ AMachineKey::AMachineKey()
 {
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bStartWithTickEnabled = false;
-	
 }
 
 void AMachineKey::Tick(float DeltaTime)

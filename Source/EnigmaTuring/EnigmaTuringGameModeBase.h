@@ -12,5 +12,7 @@ UCLASS()
 class ENIGMATURING_API AEnigmaTuringGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
-	
+
+public:
+	//void StartPlay() override;
 };

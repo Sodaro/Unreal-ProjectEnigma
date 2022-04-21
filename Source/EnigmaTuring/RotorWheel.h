@@ -23,17 +23,17 @@ class ENIGMATURING_API ARotorWheel : public ABlueprintInteractable
 	{
 		'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'
 	};
-	TCHAR EnigmaI[26] =
+	TCHAR EnigmaIII[26] =
 	{
-		'E','K','M','F','L','G','D','Q','V','Z','N','T','O','W','Y','H','X','U','S','P','A','I','B','R','C','J'
+		'B','D','F','H','J','L','C','P','R','T','X','V','Z','N','Y','E','I','W','G','A','K','M','U','S','Q','O'
 	};
 	TCHAR EnigmaII[26] =
 	{
 		'A','J','D','K','S','I','R','U','X','B','L','H','W','T','M','C','Q','G','Z','N','P','Y','F','V','O','E'
 	};
-	TCHAR EnigmaIII[26] =
+	TCHAR EnigmaI[26] =
 	{
-		'B','D','F','H','J','L','C','P','R','T','X','V','Z','N','Y','E','I','W','G','A','K','M','U','S','Q','O'
+		'E','K','M','F','L','G','D','Q','V','Z','N','T','O','W','Y','H','X','U','S','P','A','I','B','R','C','J'
 	};
 	TCHAR ReflectorB[26] =
 	{
@@ -49,6 +49,8 @@ class ENIGMATURING_API ARotorWheel : public ABlueprintInteractable
 	void ChangeDisplayName();
 	
 	void DoRotation();
+
+	void ShiftLeft();
 
 protected:
 	virtual void BeginPlay() override;
@@ -73,7 +75,7 @@ public:
 	//virtual void Interact() override;
 	void Rotate();
 	void Rotate(TCHAR Input);
-	int32 Encode(int alphabetIndex, bool reverse);
+	int32 Encode(int32 alphabetIndex, bool reverse);
 	int32 EncryptLetter(int32 Index);
 
 	UFUNCTION(BlueprintCallable)
@@ -83,8 +85,8 @@ public:
 	void ChangeRingSettingPosition(int32 Position);
 
 	UFUNCTION(BlueprintCallable)
-	void IncrementRingOffset();
+	int32 IncrementRingOffset();
 
 	UFUNCTION(BlueprintCallable)
-	void IncrementRingSettingPosition();
+	int32 IncrementRingSettingPosition();
 };

@@ -65,20 +65,44 @@ void AEnigmaMachine::PressKey(int32 AlphabetIndex)
 	IndexKey = IndexKey.AppendChar((TCHAR)(AlphabetIndex + 'A'));
 	KeyLampPairs[IndexKey].Key->PlayPressAnimation(0.25f);
 }
-int32 AEnigmaMachine::EncodeLetter(int32 AlphabetIndex)
+int32 AEnigmaMachine::EncodeLetter(int32 InAlphabetIndex)
 {
-	AlphabetIndex = RightWheel->EncryptLetter(AlphabetIndex);
+	int32 OutAlphabetIndex;
 
+	RightWheel->Rotate();
+	/*PLUGBOARD(INALPHABETINDEX)*/
+	OutAlphabetIndex = RightWheel->Encode(InAlphabetIndex, false);
+	TCHAR Letter = (TCHAR)(OutAlphabetIndex + 'A');
+
+	OutAlphabetIndex = MidWheel->Encode(OutAlphabetIndex, false);
+	Letter = (TCHAR)(OutAlphabetIndex + 'A');
+
+	OutAlphabetIndex = LeftWheel->Encode(OutAlphabetIndex, false);
+	Letter = (TCHAR)(OutAlphabetIndex + 'A');
+
+	OutAlphabetIndex = ReflectorWheel->Encode(OutAlphabetIndex, false);
+	Letter = (TCHAR)(OutAlphabetIndex + 'A');
+
+	OutAlphabetIndex = LeftWheel->Encode(OutAlphabetIndex, true);
+	Letter = (TCHAR)(OutAlphabetIndex + 'A');
+
+	OutAlphabetIndex = MidWheel->Encode(OutAlphabetIndex, true);
+	Letter = (TCHAR)(OutAlphabetIndex + 'A');
+
+	OutAlphabetIndex = RightWheel->Encode(OutAlphabetIndex, true);
+	Letter = (TCHAR)(OutAlphabetIndex + 'A');
+
+	/*PLUGBOARD(OutAlphabetIndex)*/
 	if (LastLampKey != "")
 	{
 		KeyLampPairs[LastLampKey].Lamp->TurnOff();
 	}
 	LastLampKey.Reset();
-	LastLampKey = LastLampKey.AppendChar((TCHAR)(AlphabetIndex + 'A'));
+	LastLampKey = LastLampKey.AppendChar((TCHAR)(OutAlphabetIndex + 'A'));
 	KeyLampPairs[LastLampKey].Lamp->TurnOn();
 
-	OutputText += (TCHAR)(AlphabetIndex + 'A');
-	
+	OutputText += Letter;
+
 	FString ReadableText = "";
 	ReadableText += OutputText[0];
 	for (int i = 1; i < OutputText.Len(); i++)
@@ -90,6 +114,7 @@ int32 AEnigmaMachine::EncodeLetter(int32 AlphabetIndex)
 	}
 
 	OutputWidget->SetText(ReadableText);
-	return AlphabetIndex;
+	
+	return OutAlphabetIndex;
 }
 

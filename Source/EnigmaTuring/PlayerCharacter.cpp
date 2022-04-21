@@ -7,8 +7,8 @@
 #include <Kismet/KismetSystemLibrary.h>
 #include "InteractableObject.h"
 #include "EnigmaMachine.h"
+#include "Kismet/GameplayStatics.h"
 
-// Sets default values
 APlayerCharacter::APlayerCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
@@ -23,13 +23,32 @@ APlayerCharacter::APlayerCharacter()
 	
 }
 
-// Called when the game starts or when spawned
 void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 }
 
-// Called every frame
+void APlayerCharacter::DoTrace()
+{
+	FHitResult HitResult;
+	FVector StartPos = Camera->GetComponentLocation();
+	FVector EndPos = StartPos + Camera->GetForwardVector() * 5000.f;
+
+	UWorld* world = GetWorld();
+
+	world->LineTraceSingleByChannel(HitResult, StartPos, EndPos, ECC_WorldStatic);
+	if (HitResult.bBlockingHit)
+	{
+		if (HitResult.Actor.IsValid() == false)
+			return;
+
+		if (HitResult.Actor.Get()->IsA<AInteractableObject>())
+		{
+			HoveredInteractable = Cast<AInteractableObject>(HitResult.Actor);
+		}
+	}
+}
+
 void APlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
@@ -49,32 +68,39 @@ void APlayerCharacter::Tick(float DeltaTime)
 	{
 		Camera->SetRelativeRotation(cameraRot* rotQuatCamera);
 	}
+
+	DoTrace();
+	if (HoveredInteractable.IsValid())
+	{
+		HoveredInteractable->Hover();
+	}
 }
 
 void APlayerCharacter::Interact()
 {
-	/*if (GEngine)
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("click")));*/
-
-	FHitResult HitResult;
-	FVector StartPos = Camera->GetComponentLocation();
-	FVector EndPos = StartPos + Camera->GetForwardVector()*5000.f;
+	//FHitResult HitResult;
+	//FVector StartPos = Camera->GetComponentLocation();
+	//FVector EndPos = StartPos + Camera->GetForwardVector()*5000.f;
 
 
-	UWorld* world = GetWorld();
+	//UWorld* world = GetWorld();
 
-	world->LineTraceSingleByChannel(HitResult, StartPos, EndPos, ECC_WorldStatic);
-	if (HitResult.bBlockingHit)
+	//world->LineTraceSingleByChannel(HitResult, StartPos, EndPos, ECC_WorldStatic);
+	//if (HitResult.bBlockingHit)
+	//{
+	//	if (HitResult.Actor.IsValid() == false)
+	//		return;
+
+	//	if (HitResult.Actor.Get()->IsA<AInteractableObject>())
+	//	{
+	//		Cast<AInteractableObject>(HitResult.Actor)->Interact();
+	//	}
+	//}
+
+	if (HoveredInteractable.IsValid())
 	{
-		if (HitResult.Actor.IsValid() == false)
-			return;
-
-		if (HitResult.Actor.Get()->IsA<AInteractableObject>())
-		{
-			Cast<AInteractableObject>(HitResult.Actor)->Interact();
-		}
+		HoveredInteractable->Interact();
 	}
-
 }
 
 void APlayerCharacter::EncodeLetter(FKey Key)
@@ -84,14 +110,11 @@ void APlayerCharacter::EncodeLetter(FKey Key)
 		return;
 
 	TCHAR Letter = KeyName[0];
-	for (int i = 0; i < 26; i++)
+	int32 Value = Letter - 'A';
+	if (Value >= 0 && Value <= 25)
 	{
-		if (Letter == 'A' + i)
-		{
-			EnigmaMachine->PressKey(i);
-			EnigmaMachine->EncodeLetter(i);
-			break;
-		}
+		EnigmaMachine->PressKey(Value);
+		EnigmaMachine->EncodeLetter(Value);
 	}
 }
 
@@ -103,4 +126,13 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	InputComponent->BindAxis("Look X");
 	InputComponent->BindAxis("Look Y");
 	InputComponent->BindAction("AnyKey", IE_Pressed, this, &APlayerCharacter::EncodeLetter);
+	InputComponent->BindAction("ToggleLogging", IE_Pressed, this, &APlayerCharacter::ToggleScreenLogging);
+}
+
+void APlayerCharacter::ToggleScreenLogging()
+{
+	LoggingEnabled = !LoggingEnabled;
+	FString Cmd = LoggingEnabled ? "ENABLEALLSCREENMESSAGES" : "DISABLEALLSCREENMESSAGES";
+	auto CoolController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+	CoolController->ConsoleCommand(Cmd, true);
 }

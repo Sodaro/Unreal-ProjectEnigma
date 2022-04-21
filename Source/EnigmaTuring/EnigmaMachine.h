@@ -50,6 +50,10 @@ public:
 	ARotorWheel* LeftWheel;
 
 	UPROPERTY(EditInstanceOnly)
+	ARotorWheel* ReflectorWheel;
+
+
+	UPROPERTY(EditInstanceOnly)
 	TMap<FString, FKeyLampPair> KeyLampPairs;
 
 	FString LastLampKey = "";

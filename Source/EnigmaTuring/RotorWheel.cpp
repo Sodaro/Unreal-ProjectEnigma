@@ -5,6 +5,7 @@
 #include <Components/TextRenderComponent.h>
 ARotorWheel::ARotorWheel()
 {
+	//Super::Interact();
 	Text = CreateDefaultSubobject<UTextRenderComponent>(TEXT("TextComponent"));
 	Text->SetupAttachment(RootComponent);
 }
@@ -19,6 +20,7 @@ void ARotorWheel::ChangeDisplayName()
 void ARotorWheel::DoRotation()
 {
 	++CurrentRotationOffset %= 26;
+	//++RingSettingOffset %= 26;
 	float Amount = 360.f / 26;
 	FQuat Rotation = FQuat::MakeFromEuler(FVector{ 0, Amount, 0 });
 	Mesh->AddRelativeRotation(Rotation);
@@ -61,7 +63,7 @@ void ARotorWheel::BeginPlay()
 void ARotorWheel::Rotate()
 {
 	DoRotation();
-	Encode(0, false);
+	//Encode(0, false);
 	if (CurrentRotationOffset + 'A' == NotchPos)
 	{
 		NextWheel->Rotate();
@@ -79,47 +81,82 @@ void ARotorWheel::Rotate(TCHAR Input)
 	}
 }
 
-int32 ARotorWheel::Encode(int AlphabetIndex, bool reverse)
+int32 ARotorWheel::Encode(int32 Input, bool reverse)
 {
-	int CipherLetterIndex = (AlphabetIndex - RingSettingOffset + CurrentRotationOffset) % 26;
-	TCHAR Letter = Alphabet[CipherLetterIndex];
-	TCHAR CipherLetter = ActiveArr[CipherLetterIndex];
-	
-	if (reverse)
+	int32 Index, NewAlphabetIndex;
+	TCHAR InputLetter, CipherLetter;
+
+
+	InputLetter = Alphabet[Input];
+	if (reverse == false)
 	{
-		//TODO: make this not a loop, use pairs or dicts
+		Index = Input + CurrentRotationOffset - RingSettingOffset;
+		if (Index < 0)
+			Index += 26;
+		else if (Index >= 26)
+			Index -= 26;
+		CipherLetter = ActiveArr[Index];
+		NewAlphabetIndex = CipherLetter - 'A' - CurrentRotationOffset + RingSettingOffset;
+		if (NewAlphabetIndex < 0)
+			NewAlphabetIndex += 26;
+		else if (NewAlphabetIndex >= 26)
+			NewAlphabetIndex -= 26;
+	}
+	else if (reverse == true)
+	{
+		Index = Input + CurrentRotationOffset - RingSettingOffset;
+		if (Index < 0)
+			Index += 26;
+		else if (Index >= 26)
+			Index -= 26;
 		for (int i = 0; i < 26; i++)
 		{
-			if (ActiveArr[i] == Letter)
+			if (ActiveArr[i] - 'A' == Index)
 			{
-				CipherLetter = Alphabet[i];
+				NewAlphabetIndex = i - CurrentRotationOffset + RingSettingOffset;
+				if (NewAlphabetIndex < 0)
+					NewAlphabetIndex += 26;
+				else if (NewAlphabetIndex >= 26)
+					NewAlphabetIndex -= 26;
 				break;
 			}
 		}
-		
 	}
 
-	AlphabetIndex = CipherLetter - 'A' - CurrentRotationOffset + RingSettingOffset;
-	
-	//alphabetIndex -= Offset;
-	if (AlphabetIndex < 0)
-		AlphabetIndex += 26;
+	return NewAlphabetIndex;
 
-	if (NextWheel != nullptr && reverse == false)
-	{
-		AlphabetIndex = NextWheel->Encode(AlphabetIndex, false);
-	}
-	else if (PrevWheel != nullptr)
-	{
-		AlphabetIndex = PrevWheel->Encode(AlphabetIndex, true);
-	}
-	else
-	{
-		return AlphabetIndex;
-		/*if (GEngine)
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Letter:%c"), Alphabet[AlphabetIndex]));*/
-	}
-	return AlphabetIndex;
+
+	//if (reverse == true)
+	//{
+	//	//CipherLetter = Z = 25, ActiveArr[25] == E
+	//	NewAlphabetIndex = ActiveArr[NewAlphabetIndex] - 'A';
+	//}
+	////else
+	////{
+	////	//Z = 25, ActiveArr[25] == E
+
+	////	CipherLetter = ActiveArr[NewAlphabetIndex];
+	////	//for (int i = 0; i < 26; i++)
+	////	//{
+	////	//	if (ActiveArr[i] == CipherLetter)
+	////	//	{
+	////	//		NewAlphabetIndex = i;
+	////	//		break;
+	////	//	}
+	////	//}
+	////}
+	//if (NextWheel != nullptr && reverse == false)
+	//{
+	//	Input = NextWheel->Encode(NewAlphabetIndex, false);
+	//}
+	//else if (PrevWheel != nullptr)
+	//{
+	//	Input = PrevWheel->Encode(NewAlphabetIndex, true);
+	//}
+	//Input -= CurrentRotationOffset;
+	//if (Input < 0)
+	//	Input += 26;
+	//return ActiveArr[Input]-'A';
 }
 
 int32 ARotorWheel::EncryptLetter(int32 Index)
@@ -155,13 +192,27 @@ void ARotorWheel::ChangeRingSettingPosition(int32 Position)
 	RingSettingOffset = Position;
 }
 
-void ARotorWheel::IncrementRingOffset()
+void ARotorWheel::ShiftLeft()
+{
+	int temp = ActiveArr[0];
+
+	for (int i = 0; i < 26; i++)
+	{
+		ActiveArr[i] = ActiveArr[i + 1];
+	}
+	ActiveArr[25] = temp;
+}
+
+int32 ARotorWheel::IncrementRingOffset()
 {
 	++CurrentRotationOffset %= 26;
 	ChangeDisplayName();
+	return CurrentRotationOffset;
 }
 
-void ARotorWheel::IncrementRingSettingPosition()
+int32 ARotorWheel::IncrementRingSettingPosition()
 {
 	++RingSettingOffset %= 26;
+	//ShiftLeft();
+	return RingSettingOffset;
 }

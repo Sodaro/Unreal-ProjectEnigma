@@ -23,7 +23,12 @@ void AInteractableObject::BeginPlay()
 
 void AInteractableObject::Interact()
 {
-	UE_LOG(LogTemp, Log, TEXT("%s: clicked"), *this->GetName());
-	if (GEngine)
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, FString::Printf(TEXT("%s: interaction"), *this->GetName()));
+	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Cyan, FString::Printf(TEXT("%s: interaction"), *this->GetName()));
+}
+
+void AInteractableObject::Hover()
+{
+	//GEngine->AddOnScreenDebugMessage(-1, 0, FColor::Cyan, TEXT("Logging is enabled!"));
+
+	GEngine->AddOnScreenDebugMessage(-1, 0, FColor::Cyan, FString::Printf(TEXT("%s: hovered"), *this->GetName()));
 }

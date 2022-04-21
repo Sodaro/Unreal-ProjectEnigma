@@ -3,3 +3,7 @@
 
 #include "EnigmaTuringGameModeBase.h"
 
+//void AEnigmaTuringGameModeBase::StartPlay()
+//{
+//	Super::StartPlay();
+//}
