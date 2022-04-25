@@ -1,10 +1,10 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
 #include "BlueprintInteractable.h"
 #include "RotorWheel.generated.h"
+
+class UTextRenderComponent;
 
 UENUM(BlueprintType)
 enum class Cipher : uint8 {
@@ -72,11 +72,8 @@ public:
 	UPROPERTY(EditAnywhere)
 	ARotorWheel* NextWheel;
 
-	//virtual void Interact() override;
 	void Rotate();
-	void Rotate(TCHAR Input);
 	int32 Encode(int32 alphabetIndex, bool reverse);
-	int32 EncryptLetter(int32 Index);
 
 	UFUNCTION(BlueprintCallable)
 	void SetRingRotationOffset(int32 Offset);

@@ -54,27 +54,10 @@ void ARotorWheel::BeginPlay()
 	}
 }
 
-//void ARotorWheel::Interact()
-//{
-//	Super::Interact();
-//	Rotate();
-//}
 
 void ARotorWheel::Rotate()
 {
 	DoRotation();
-	//Encode(0, false);
-	if (CurrentRotationOffset + 'A' == NotchPos)
-	{
-		NextWheel->Rotate();
-	}
-}
-
-void ARotorWheel::Rotate(TCHAR Input)
-{
-	DoRotation();
-
-	Encode(Input - 'A', false);
 	if (CurrentRotationOffset + 'A' == NotchPos)
 	{
 		NextWheel->Rotate();
@@ -124,51 +107,6 @@ int32 ARotorWheel::Encode(int32 Input, bool reverse)
 	}
 
 	return NewAlphabetIndex;
-
-
-	//if (reverse == true)
-	//{
-	//	//CipherLetter = Z = 25, ActiveArr[25] == E
-	//	NewAlphabetIndex = ActiveArr[NewAlphabetIndex] - 'A';
-	//}
-	////else
-	////{
-	////	//Z = 25, ActiveArr[25] == E
-
-	////	CipherLetter = ActiveArr[NewAlphabetIndex];
-	////	//for (int i = 0; i < 26; i++)
-	////	//{
-	////	//	if (ActiveArr[i] == CipherLetter)
-	////	//	{
-	////	//		NewAlphabetIndex = i;
-	////	//		break;
-	////	//	}
-	////	//}
-	////}
-	//if (NextWheel != nullptr && reverse == false)
-	//{
-	//	Input = NextWheel->Encode(NewAlphabetIndex, false);
-	//}
-	//else if (PrevWheel != nullptr)
-	//{
-	//	Input = PrevWheel->Encode(NewAlphabetIndex, true);
-	//}
-	//Input -= CurrentRotationOffset;
-	//if (Input < 0)
-	//	Input += 26;
-	//return ActiveArr[Input]-'A';
-}
-
-int32 ARotorWheel::EncryptLetter(int32 Index)
-{
-	DoRotation();
-
-	int32 RetVal = Encode(Index, false);
-	if (CurrentRotationOffset + 'A' == NotchPos)
-	{
-		NextWheel->Rotate();
-	}
-	return RetVal;
 }
 
 void ARotorWheel::SetRingRotationOffset(int32 Offset)

@@ -1,6 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "PlayerCharacter.h"
 #include <Camera/CameraComponent.h>
 #include <Components/StaticMeshComponent.h>
@@ -15,12 +12,9 @@ APlayerCharacter::APlayerCharacter()
 	AutoPossessPlayer = EAutoReceiveInput::Player0;
 
 	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("RootComponent"));
-	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComponent"));
-	Mesh->SetupAttachment(RootComponent);
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComponent"));
 	Camera->SetupAttachment(RootComponent);
 	Camera->SetRelativeLocation(FVector(0.0f, 0.0f, 180.f));
-	
 }
 
 void APlayerCharacter::BeginPlay()
@@ -78,25 +72,6 @@ void APlayerCharacter::Tick(float DeltaTime)
 
 void APlayerCharacter::Interact()
 {
-	//FHitResult HitResult;
-	//FVector StartPos = Camera->GetComponentLocation();
-	//FVector EndPos = StartPos + Camera->GetForwardVector()*5000.f;
-
-
-	//UWorld* world = GetWorld();
-
-	//world->LineTraceSingleByChannel(HitResult, StartPos, EndPos, ECC_WorldStatic);
-	//if (HitResult.bBlockingHit)
-	//{
-	//	if (HitResult.Actor.IsValid() == false)
-	//		return;
-
-	//	if (HitResult.Actor.Get()->IsA<AInteractableObject>())
-	//	{
-	//		Cast<AInteractableObject>(HitResult.Actor)->Interact();
-	//	}
-	//}
-
 	if (HoveredInteractable.IsValid())
 	{
 		HoveredInteractable->Interact();
@@ -105,6 +80,7 @@ void APlayerCharacter::Interact()
 
 void APlayerCharacter::EncodeLetter(FKey Key)
 {
+	//Send the keyboard input to the enigma machine, given a key value of A-Z
 	FString KeyName = Key.GetFName().ToString();
 	if (KeyName.Len() > 1)
 		return;

@@ -6,7 +6,6 @@
 #include "GameFramework/Pawn.h"
 #include "PlayerCharacter.generated.h"
 class UCameraComponent;
-class UStaticMeshComponent;
 class AEnigmaMachine;
 class AInteractableObject;
 
@@ -47,14 +46,8 @@ public:
 	UPROPERTY(EditAnywhere)
 	float MaxAngle = 60.f;
 
-	UPROPERTY(EditAnywhere)
-	UStaticMeshComponent* Mesh;
-
 	UPROPERTY(EditInstanceOnly)
 	AEnigmaMachine* EnigmaMachine;
-
-	UFUNCTION(BlueprintCallable, BlueprintPure)
-	AEnigmaMachine* GetEnigmaMachine() { return EnigmaMachine; };
 
 	UPROPERTY(EditAnywhere)
 	UCameraComponent* Camera;

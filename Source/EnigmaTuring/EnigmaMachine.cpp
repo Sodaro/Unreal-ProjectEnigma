@@ -1,6 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "EnigmaMachine.h"
 #include "RotorWheel.h"
 #include "MachineKey.h"
@@ -13,98 +10,61 @@ void AEnigmaMachine::BeginPlay()
 	OutputWidget->AddToViewport();
 }
 
-void AEnigmaMachine::ChangeRingOffset(RingPosition RingPos, int32 Offset)
-{
-	if (Offset > 25)
-		Offset = 25;
-	else if (Offset < 0)
-		Offset = 0;
-
-	switch (RingPos)
-	{
-	case RingPosition::LEFT:
-		LeftWheel->RingSettingOffset = Offset;
-		break;
-	case RingPosition::MID:
-		MidWheel->RingSettingOffset = Offset;
-		break;
-	case RingPosition::RIGHT:
-		RightWheel->RingSettingOffset = Offset;
-		break;
-	default:
-		break;
-	}
-}
-
-void AEnigmaMachine::SetRingPosition(RingPosition RingPos, int32 Position)
-{
-	if (Position > 25)
-		Position = 25;
-	else if (Position < 0)
-		Position = 0;
-
-	switch (RingPos)
-	{
-	case RingPosition::LEFT:
-		LeftWheel->SetRingRotationOffset(Position);
-		break;
-	case RingPosition::MID:
-		MidWheel->SetRingRotationOffset(Position);
-		break;
-	case RingPosition::RIGHT:
-		RightWheel->SetRingRotationOffset(Position);
-		break;
-	default:
-		break;
-	}
-}
-
 void AEnigmaMachine::PressKey(int32 AlphabetIndex)
 {
 	FString IndexKey = "";
 	IndexKey = IndexKey.AppendChar((TCHAR)(AlphabetIndex + 'A'));
 	KeyLampPairs[IndexKey].Key->PlayPressAnimation(0.25f);
 }
-int32 AEnigmaMachine::EncodeLetter(int32 InAlphabetIndex)
+int32 AEnigmaMachine::EncodeLetter(int32 AlphabetIndex)
 {
-	int32 OutAlphabetIndex;
+	/*
+	* Plugboard is not implemented but would provide extra layer of encryption
+	* before any other encryption has happened and after the regular encryption
+	* is done.
+	*/
 
-	RightWheel->Rotate();
-	/*PLUGBOARD(INALPHABETINDEX)*/
-	OutAlphabetIndex = RightWheel->Encode(InAlphabetIndex, false);
-	TCHAR Letter = (TCHAR)(OutAlphabetIndex + 'A');
+	/*
+	* ENCRYPTION LOGIC
+	* 1. Rotate first wheel every time a key is pressed.
+	* 2. Encrypt the input based on each wheel's configs.
+	* 3. Get the connected letter in the reflector.
+	* 4. Reverse through the wheels. 
+		(different encryption to simulate the electric signal going the opposite way)
+	* 5. Turn on the lamp matching the encrypted key, and output it to the textbox.
+	*/
 
-	OutAlphabetIndex = MidWheel->Encode(OutAlphabetIndex, false);
-	Letter = (TCHAR)(OutAlphabetIndex + 'A');
+	RotorWheels[0]->Rotate();
 
-	OutAlphabetIndex = LeftWheel->Encode(OutAlphabetIndex, false);
-	Letter = (TCHAR)(OutAlphabetIndex + 'A');
+	TCHAR Letter;
+	for (int i = 0; i < 3; i++)
+	{
+		AlphabetIndex = RotorWheels[i]->Encode(AlphabetIndex, false);
+		Letter = (TCHAR)(AlphabetIndex + 'A');
+	}
 
-	OutAlphabetIndex = ReflectorWheel->Encode(OutAlphabetIndex, false);
-	Letter = (TCHAR)(OutAlphabetIndex + 'A');
+	AlphabetIndex = ReflectorWheel->Encode(AlphabetIndex, false);
+	Letter = (TCHAR)(AlphabetIndex + 'A');
 
-	OutAlphabetIndex = LeftWheel->Encode(OutAlphabetIndex, true);
-	Letter = (TCHAR)(OutAlphabetIndex + 'A');
-
-	OutAlphabetIndex = MidWheel->Encode(OutAlphabetIndex, true);
-	Letter = (TCHAR)(OutAlphabetIndex + 'A');
-
-	OutAlphabetIndex = RightWheel->Encode(OutAlphabetIndex, true);
-	Letter = (TCHAR)(OutAlphabetIndex + 'A');
-
-	/*PLUGBOARD(OutAlphabetIndex)*/
+	for (int i = 2; i >= 0; i--)
+	{
+		AlphabetIndex = RotorWheels[i]->Encode(AlphabetIndex, true);
+		Letter = (TCHAR)(AlphabetIndex + 'A');
+	}
+	
 	if (LastLampKey != "")
 	{
 		KeyLampPairs[LastLampKey].Lamp->TurnOff();
 	}
+
 	LastLampKey.Reset();
-	LastLampKey = LastLampKey.AppendChar((TCHAR)(OutAlphabetIndex + 'A'));
+	LastLampKey = LastLampKey.AppendChar(Letter);
 	KeyLampPairs[LastLampKey].Lamp->TurnOn();
 
-	OutputText += Letter;
-
 	FString ReadableText = "";
+	OutputText += Letter;
 	ReadableText += OutputText[0];
+	
 	for (int i = 1; i < OutputText.Len(); i++)
 	{
 		if (i % 5 == 0)
@@ -114,7 +74,6 @@ int32 AEnigmaMachine::EncodeLetter(int32 InAlphabetIndex)
 	}
 
 	OutputWidget->SetText(ReadableText);
-	
-	return OutAlphabetIndex;
+	return AlphabetIndex;
 }
 

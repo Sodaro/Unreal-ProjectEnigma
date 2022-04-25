@@ -41,17 +41,10 @@ public:
 	void BeginPlay() override;
 
 	UPROPERTY(EditInstanceOnly)
-	ARotorWheel* RightWheel;
-
-	UPROPERTY(EditInstanceOnly)
-	ARotorWheel* MidWheel;
-
-	UPROPERTY(EditInstanceOnly)
-	ARotorWheel* LeftWheel;
+	TArray<ARotorWheel*> RotorWheels;
 
 	UPROPERTY(EditInstanceOnly)
 	ARotorWheel* ReflectorWheel;
-
 
 	UPROPERTY(EditInstanceOnly)
 	TMap<FString, FKeyLampPair> KeyLampPairs;
@@ -64,12 +57,6 @@ public:
 	TSubclassOf<UMachineTextOutput> OutputWidgetClass;
 
 	UMachineTextOutput* OutputWidget;
-
-	UFUNCTION(BlueprintCallable)
-	void ChangeRingOffset(RingPosition RingPos, int32 Offset);
-
-	UFUNCTION(BlueprintCallable)
-	void SetRingPosition(RingPosition RingPos, int32 Position);
 
 	void PressKey(int32 AlphabetIndex);
 	int32 EncodeLetter(int32 AlphabetIndex);
