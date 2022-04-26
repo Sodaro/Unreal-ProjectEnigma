@@ -2,6 +2,7 @@
 #include "RotorWheel.h"
 #include "MachineKey.h"
 #include "MachineLamp.h"
+#include "MachinePlug.h"
 #include "MachineTextOutput.h"
 
 void AEnigmaMachine::BeginPlay()
@@ -14,7 +15,7 @@ void AEnigmaMachine::PressKey(int32 AlphabetIndex)
 {
 	FString IndexKey = "";
 	IndexKey = IndexKey.AppendChar((TCHAR)(AlphabetIndex + 'A'));
-	KeyLampPairs[IndexKey].Key->PlayPressAnimation(0.25f);
+	LetterComponents[IndexKey].Key->PlayPressAnimation(0.25f);
 }
 int32 AEnigmaMachine::EncodeLetter(int32 AlphabetIndex)
 {
@@ -33,6 +34,13 @@ int32 AEnigmaMachine::EncodeLetter(int32 AlphabetIndex)
 		(different encryption to simulate the electric signal going the opposite way)
 	* 5. Turn on the lamp matching the encrypted key, and output it to the textbox.
 	*/
+	FString Key = "";
+	Key.AppendChar((TCHAR)(AlphabetIndex + 'A'));
+	
+	if (LetterComponents[Key].Plug->HasConnectedPlug())
+	{
+		AlphabetIndex = LetterComponents[Key].Plug->GetConnectedPlug()->GetLetterIndex();
+	}
 
 	RotorWheels[0]->Rotate();
 
@@ -51,15 +59,22 @@ int32 AEnigmaMachine::EncodeLetter(int32 AlphabetIndex)
 		AlphabetIndex = RotorWheels[i]->Encode(AlphabetIndex, true);
 		Letter = (TCHAR)(AlphabetIndex + 'A');
 	}
+	Key = "";
+	Key.AppendChar(Letter);
+	if (LetterComponents[Key].Plug->HasConnectedPlug())
+	{
+		AlphabetIndex = LetterComponents[Key].Plug->GetConnectedPlug()->GetLetterIndex();
+		Letter = (TCHAR)(AlphabetIndex + 'A');
+	}
 	
 	if (LastLampKey != "")
 	{
-		KeyLampPairs[LastLampKey].Lamp->TurnOff();
+		LetterComponents[LastLampKey].Lamp->TurnOff();
 	}
 
 	LastLampKey.Reset();
 	LastLampKey = LastLampKey.AppendChar(Letter);
-	KeyLampPairs[LastLampKey].Lamp->TurnOn();
+	LetterComponents[LastLampKey].Lamp->TurnOn();
 
 	FString ReadableText = "";
 	OutputText += Letter;

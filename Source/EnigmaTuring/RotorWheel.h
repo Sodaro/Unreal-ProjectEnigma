@@ -46,11 +46,13 @@ class ENIGMATURING_API ARotorWheel : public ABlueprintInteractable
 
 	FString DisplayedText = "A";
 
+
+	void Wrap(int32& Number, int32 Start, int32 End);
 	void ChangeDisplayName();
 	
 	void DoRotation();
 
-	void ShiftLeft();
+	//void ShiftLeft();
 
 protected:
 	virtual void BeginPlay() override;

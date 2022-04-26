@@ -9,6 +9,7 @@ class ARotorWheel;
 
 class AMachineLamp;
 class AMachineKey;
+class AMachinePlug;
 
 class UMachineTextOutput;
 
@@ -21,7 +22,7 @@ enum RingPosition
 };
 
 USTRUCT()
-struct FKeyLampPair
+struct FLetterComponents
 {
 	GENERATED_BODY()
 
@@ -29,6 +30,8 @@ struct FKeyLampPair
 	AMachineLamp* Lamp;
 	UPROPERTY(EditInstanceOnly)
 	AMachineKey* Key;
+	UPROPERTY(EditInstanceOnly)
+	AMachinePlug* Plug;
 };
 
 UCLASS()
@@ -47,7 +50,7 @@ public:
 	ARotorWheel* ReflectorWheel;
 
 	UPROPERTY(EditInstanceOnly)
-	TMap<FString, FKeyLampPair> KeyLampPairs;
+	TMap<FString, FLetterComponents> LetterComponents;
 
 	FString LastLampKey = "";
 

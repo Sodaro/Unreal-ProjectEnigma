@@ -10,6 +10,14 @@ ARotorWheel::ARotorWheel()
 	Text->SetupAttachment(RootComponent);
 }
 
+void ARotorWheel::Wrap(int32& Number, int32 Start, int32 End)
+{
+	Number %= End;
+
+	while (Number < 0)
+		Number += End;
+}
+
 void ARotorWheel::ChangeDisplayName()
 {
 	DisplayedText.Reset();
@@ -74,33 +82,37 @@ int32 ARotorWheel::Encode(int32 Input, bool reverse)
 	if (reverse == false)
 	{
 		Index = Input + CurrentRotationOffset - RingSettingOffset;
-		if (Index < 0)
+		Wrap(Index, 0, 26);
+		/*if (Index < 0)
 			Index += 26;
 		else if (Index >= 26)
-			Index -= 26;
+			Index -= 26;*/
 		CipherLetter = ActiveArr[Index];
 		NewAlphabetIndex = CipherLetter - 'A' - CurrentRotationOffset + RingSettingOffset;
-		if (NewAlphabetIndex < 0)
-			NewAlphabetIndex += 26;
-		else if (NewAlphabetIndex >= 26)
-			NewAlphabetIndex -= 26;
+		Wrap(NewAlphabetIndex, 0, 26);
+		//if (NewAlphabetIndex < 0)
+		//	NewAlphabetIndex += 26;
+		//else if (NewAlphabetIndex >= 26)
+		//	NewAlphabetIndex -= 26;
 	}
 	else if (reverse == true)
 	{
 		Index = Input + CurrentRotationOffset - RingSettingOffset;
-		if (Index < 0)
+		Wrap(Index, 0, 26);
+		/*if (Index < 0)
 			Index += 26;
 		else if (Index >= 26)
-			Index -= 26;
+			Index -= 26;*/
 		for (int i = 0; i < 26; i++)
 		{
 			if (ActiveArr[i] - 'A' == Index)
 			{
 				NewAlphabetIndex = i - CurrentRotationOffset + RingSettingOffset;
-				if (NewAlphabetIndex < 0)
+				Wrap(NewAlphabetIndex, 0, 26);
+				/*if (NewAlphabetIndex < 0)
 					NewAlphabetIndex += 26;
 				else if (NewAlphabetIndex >= 26)
-					NewAlphabetIndex -= 26;
+					NewAlphabetIndex -= 26;*/
 				break;
 			}
 		}
@@ -130,16 +142,16 @@ void ARotorWheel::ChangeRingSettingPosition(int32 Position)
 	RingSettingOffset = Position;
 }
 
-void ARotorWheel::ShiftLeft()
-{
-	int temp = ActiveArr[0];
-
-	for (int i = 0; i < 26; i++)
-	{
-		ActiveArr[i] = ActiveArr[i + 1];
-	}
-	ActiveArr[25] = temp;
-}
+//void ARotorWheel::ShiftLeft()
+//{
+//	int temp = ActiveArr[0];
+//
+//	for (int i = 0; i < 26; i++)
+//	{
+//		ActiveArr[i] = ActiveArr[i + 1];
+//	}
+//	ActiveArr[25] = temp;
+//}
 
 int32 ARotorWheel::IncrementRingOffset()
 {

@@ -5,6 +5,7 @@
 #include "InteractableObject.h"
 #include "EnigmaMachine.h"
 #include "Kismet/GameplayStatics.h"
+#include "MachinePlug.h"
 
 APlayerCharacter::APlayerCharacter()
 {
@@ -14,7 +15,7 @@ APlayerCharacter::APlayerCharacter()
 	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("RootComponent"));
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComponent"));
 	Camera->SetupAttachment(RootComponent);
-	Camera->SetRelativeLocation(FVector(0.0f, 0.0f, 180.f));
+	Camera->SetRelativeLocation(CameraRelativeStandPos);
 }
 
 void APlayerCharacter::BeginPlay()
@@ -72,9 +73,24 @@ void APlayerCharacter::Tick(float DeltaTime)
 
 void APlayerCharacter::Interact()
 {
-	if (HoveredInteractable.IsValid())
+	if (HoveredInteractable.IsValid() == false)
 	{
-		HoveredInteractable->Interact();
+		return;
+	}
+
+	HoveredInteractable->Interact();
+	if (HoveredInteractable->IsA<AMachinePlug>() == false)
+	{
+		return;
+	}
+
+	AMachinePlug* ClickedPlug = Cast<AMachinePlug>(HoveredInteractable);
+	if (HeldPlug == nullptr)
+		HeldPlug = ClickedPlug;
+	else
+	{
+		HeldPlug->ConnectPlug(ClickedPlug);
+		ClickedPlug->ConnectPlug(HeldPlug);
 	}
 }
 
@@ -103,6 +119,8 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	InputComponent->BindAxis("Look Y");
 	InputComponent->BindAction("AnyKey", IE_Pressed, this, &APlayerCharacter::EncodeLetter);
 	InputComponent->BindAction("ToggleLogging", IE_Pressed, this, &APlayerCharacter::ToggleScreenLogging);
+	InputComponent->BindAction("Crouch", IE_Pressed, this, &APlayerCharacter::Crouch);
+	InputComponent->BindAction("Crouch", IE_Released, this, &APlayerCharacter::UnCrouch);
 }
 
 void APlayerCharacter::ToggleScreenLogging()
@@ -111,4 +129,14 @@ void APlayerCharacter::ToggleScreenLogging()
 	FString Cmd = LoggingEnabled ? "ENABLEALLSCREENMESSAGES" : "DISABLEALLSCREENMESSAGES";
 	auto CoolController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 	CoolController->ConsoleCommand(Cmd, true);
+}
+
+void APlayerCharacter::Crouch()
+{
+	Camera->SetRelativeLocation(CameraRelativeCrouchPos);
+}
+
+void APlayerCharacter::UnCrouch()
+{
+	Camera->SetRelativeLocation(CameraRelativeStandPos);
 }

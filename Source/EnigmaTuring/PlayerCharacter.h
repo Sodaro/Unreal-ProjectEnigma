@@ -8,6 +8,7 @@
 class UCameraComponent;
 class AEnigmaMachine;
 class AInteractableObject;
+class AMachinePlug;
 
 UCLASS()
 class ENIGMATURING_API APlayerCharacter : public APawn
@@ -37,6 +38,9 @@ public:
 
 	void ToggleScreenLogging();
 
+	void Crouch();
+	void UnCrouch();
+
 	UPROPERTY(EditAnywhere)
 	float RotationSpeed = 100.f;
 
@@ -52,6 +56,13 @@ public:
 	UPROPERTY(EditAnywhere)
 	UCameraComponent* Camera;
 
+	UPROPERTY(EditAnywhere)
+	FVector CameraRelativeStandPos{ 0,0,180 };
+
+	UPROPERTY(EditAnywhere)
+	FVector CameraRelativeCrouchPos {0, 0, 80};
+
 	TWeakObjectPtr<AInteractableObject> HoveredInteractable;
+	TWeakObjectPtr<AMachinePlug> HeldPlug;
 
 };
