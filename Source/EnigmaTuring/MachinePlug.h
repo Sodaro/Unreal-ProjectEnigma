@@ -6,6 +6,7 @@
 #include "InteractableObject.h"
 #include "MachinePlug.generated.h"
 
+class AMachineCable;
 /**
  * 
  */
@@ -21,7 +22,7 @@ public:
 	FString Letter;
 
 	UPROPERTY(EditInstanceOnly)
-	TWeakObjectPtr<AMachinePlug> ConnectedPlug = nullptr;
+	TWeakObjectPtr<AMachineCable> ConnectedCable = nullptr;
 
 	int32 GetLetterIndex()
 	{
@@ -31,8 +32,8 @@ public:
 		return Letter[0] - 'A';
 	}
 
-	bool HasConnectedPlug() { return ConnectedPlug != nullptr; }
-	TWeakObjectPtr<AMachinePlug> GetConnectedPlug() { return ConnectedPlug; }
+	bool HasConnectedPlug();
+	TWeakObjectPtr<AMachinePlug> GetConnectedPlug();
 	void DisconnectPlug();
 	void ConnectPlug(TWeakObjectPtr<AMachinePlug> Plug);
 };

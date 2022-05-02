@@ -1,6 +1,8 @@
 #include "InteractableObject.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/BoxComponent.h"
+#include "Delegates/Delegate.h"
+
 AInteractableObject::AInteractableObject()
 {
 	PrimaryActorTick.bCanEverTick = false;
@@ -19,6 +21,7 @@ void AInteractableObject::BeginPlay()
 void AInteractableObject::Interact()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Cyan, FString::Printf(TEXT("%s: interaction"), *this->GetName()));
+	OnInteract.ExecuteIfBound(this);
 }
 
 void AInteractableObject::Hover()
