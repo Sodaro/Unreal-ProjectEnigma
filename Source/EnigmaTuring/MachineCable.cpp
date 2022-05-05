@@ -18,13 +18,13 @@ void AMachineCable::BeginPlay()
 	Super::BeginPlay();
 	FVector Location = GetActorLocation();
 	StartPlug = (AMachineCablePlug*)(GetWorld()->SpawnActor(EndPieceClass, &Location));
-	//StartPlug->OnInteract.BindSP(this, &AMachineCable::ConnectCable);
-	
+	StartPlug->Cable = this;
 
 	EndPlug = (AMachineCablePlug*)(GetWorld()->SpawnActor(EndPieceClass, &Location));
-	EndPlug->SetActorLocation(Location + FVector{ 50,0,0 });
+	EndPlug->SetActorLocation(Location + FVector{ 0,50,0 });
+	EndPlug->Cable = this;
+
 	CableComp->SetAttachEndTo(EndPlug, EndPlug->GetDefaultAttachComponent()->GetAttachSocketName());
-	//EndPlug->OnInteract.BindSP(this, &AMachineCable::ConnectCable);
 }
 
 void AMachineCable::Tick(float DeltaTime)
@@ -40,11 +40,8 @@ void AMachineCable::Tick(float DeltaTime)
 	
 	if (EndPlug != nullptr)
 	{
-		//FTransform Transform = GetTransform();
-		//CableComp->EndLocation = EndPlug->GetActorLocation();
+		CableComp->CableLength = FVector::Dist(Location, EndPlug->GetActorLocation()) + 10.f;
 	}
-
-	//CableComp->CableLength = CableComp->EndLocation.Size();
 	
 }
 
@@ -66,4 +63,20 @@ void AMachineCable::ConnectCable(AInteractableObject* Plug)
 
 void AMachineCable::DisconnectCable(AInteractableObject* EndPiece)
 {
+}
+
+AMachinePort* AMachineCable::GetSwappedPort(AMachinePort* InPort) const
+{
+	if (InPort == nullptr)
+		return nullptr;
+
+	//if 1 return 2, if 2 return 1
+	if (StartPlug->OverlappedPort == InPort)
+	{
+		return EndPlug->OverlappedPort;
+	}
+	else
+	{
+		return StartPlug->OverlappedPort;
+	}
 }

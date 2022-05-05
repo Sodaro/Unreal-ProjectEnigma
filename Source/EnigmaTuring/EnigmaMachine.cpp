@@ -36,10 +36,10 @@ int32 AEnigmaMachine::EncodeLetter(int32 AlphabetIndex)
 	*/
 	FString Key = "";
 	Key.AppendChar((TCHAR)(AlphabetIndex + 'A'));
-	
-	if (LetterComponents[Key].Port->HasConnectedPort())
+	TWeakObjectPtr<AMachinePort> Port = LetterComponents[Key].Port->GetSwappedPort();
+	if (Port != nullptr)
 	{
-		AlphabetIndex = LetterComponents[Key].Port->GetConnectedPort()->GetLetterIndex();
+		AlphabetIndex = Port->GetLetterIndex();
 	}
 
 	RotorWheels[0]->Rotate();
@@ -61,9 +61,10 @@ int32 AEnigmaMachine::EncodeLetter(int32 AlphabetIndex)
 	}
 	Key = "";
 	Key.AppendChar(Letter);
-	if (LetterComponents[Key].Port->HasConnectedPort())
+	Port = LetterComponents[Key].Port->GetSwappedPort();
+	if (Port != nullptr)
 	{
-		AlphabetIndex = LetterComponents[Key].Port->GetConnectedPort()->GetLetterIndex();
+		AlphabetIndex = Port->GetLetterIndex();
 		Letter = (TCHAR)(AlphabetIndex + 'A');
 	}
 	

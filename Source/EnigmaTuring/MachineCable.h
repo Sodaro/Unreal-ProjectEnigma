@@ -31,16 +31,13 @@ public:
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AMachineCablePlug> EndPieceClass;
-
-	UPROPERTY()
-	AMachinePort* StartMachinePort = nullptr;
 	
-	UPROPERTY()
+	UPROPERTY(VisibleAnywhere)
 	AMachineCablePlug* StartPlug = nullptr;
 
-	UPROPERTY()
-	AMachinePort* EndMachinePort = nullptr;
-
-	UPROPERTY()
+	UPROPERTY(VisibleAnywhere)
 	AMachineCablePlug* EndPlug = nullptr;
+
+	UFUNCTION()
+	AMachinePort* GetSwappedPort(AMachinePort* InPort) const;
 };

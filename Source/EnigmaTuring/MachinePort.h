@@ -31,9 +31,6 @@ public:
 
 		return Letter[0] - 'A';
 	}
+	TWeakObjectPtr<AMachinePort> GetSwappedPort();
 
-	bool HasConnectedPort();
-	TWeakObjectPtr<AMachinePort> GetConnectedPort();
-	void DisconnectPlug();
-	void ConnectPlug(TWeakObjectPtr<AMachinePort> Port);
 };
