@@ -5,7 +5,7 @@
 #include "InteractableObject.h"
 #include "EnigmaMachine.h"
 #include "Kismet/GameplayStatics.h"
-#include "MachinePort.h"
+#include "MachineCablePlug.h"
 
 APlayerCharacter::APlayerCharacter()
 {
@@ -69,6 +69,11 @@ void APlayerCharacter::Tick(float DeltaTime)
 	{
 		HoveredInteractable->Hover();
 	}
+
+	if (HeldPlug != nullptr)
+	{
+		HeldPlug.Get()->SetActorLocation(GetActorLocation() + Camera->GetRelativeLocation() + Camera->GetForwardVector() * 50.f);
+	}
 }
 
 void APlayerCharacter::Interact()
@@ -79,18 +84,19 @@ void APlayerCharacter::Interact()
 	}
 
 	HoveredInteractable->Interact();
-	if (HoveredInteractable->IsA<AMachinePort>() == false)
+	if (HoveredInteractable->IsA<AMachineCablePlug>() == false)
 	{
 		return;
 	}
 
-	AMachinePort* ClickedPlug = Cast<AMachinePort>(HoveredInteractable);
+	AMachineCablePlug* ClickedPlug = Cast<AMachineCablePlug>(HoveredInteractable);
 	if (HeldPlug == nullptr)
 		HeldPlug = ClickedPlug;
 	else
 	{
-		HeldPlug->ConnectPlug(ClickedPlug);
-		ClickedPlug->ConnectPlug(HeldPlug);
+		HeldPlug = nullptr;
+		//HeldPlug->ConnectPlug(ClickedPlug);
+		//ClickedPlug->ConnectPlug(HeldPlug);
 	}
 }
 

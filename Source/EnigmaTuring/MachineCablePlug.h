@@ -4,10 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "InteractableObject.h"
-#include "CableEndPiece.generated.h"
+#include "MachineCablePlug.generated.h"
 
 UCLASS()
-class ENIGMATURING_API ACablePlug : public AInteractableObject
+class ENIGMATURING_API AMachineCablePlug : public AInteractableObject
 {
 	GENERATED_BODY()
 	

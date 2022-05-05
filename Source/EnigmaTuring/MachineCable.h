@@ -8,7 +8,7 @@
 
 class UCableComponent;
 class AMachinePort;
-class ACablePlug;
+class AMachineCablePlug;
 class AInteractableObject;
 
 UCLASS()
@@ -21,6 +21,7 @@ public:
 	AMachineCable();
 
 	void BeginPlay() override;
+	void Tick(float DeltaTime) override;
 
 	void ConnectCable(AInteractableObject* EndPiece);
 	void DisconnectCable(AInteractableObject* EndPiece);
@@ -29,17 +30,17 @@ public:
 	UCableComponent* CableComp = nullptr;
 
 	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<ACablePlug> EndPieceClass;
+	TSubclassOf<AMachineCablePlug> EndPieceClass;
 
 	UPROPERTY()
 	AMachinePort* StartMachinePort = nullptr;
 	
 	UPROPERTY()
-	ACablePlug* StartPlug = nullptr;
+	AMachineCablePlug* StartPlug = nullptr;
 
 	UPROPERTY()
 	AMachinePort* EndMachinePort = nullptr;
 
 	UPROPERTY()
-	ACablePlug* EndPlug = nullptr;
+	AMachineCablePlug* EndPlug = nullptr;
 };
