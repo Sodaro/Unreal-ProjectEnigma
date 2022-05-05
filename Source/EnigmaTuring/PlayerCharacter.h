@@ -8,7 +8,7 @@
 class UCameraComponent;
 class AEnigmaMachine;
 class AInteractableObject;
-class AMachinePlug;
+class AMachinePort;
 
 UCLASS()
 class ENIGMATURING_API APlayerCharacter : public APawn
@@ -63,6 +63,6 @@ public:
 	FVector CameraRelativeCrouchPos {0, 0, 80};
 
 	TWeakObjectPtr<AInteractableObject> HoveredInteractable;
-	TWeakObjectPtr<AMachinePlug> HeldPlug;
+	TWeakObjectPtr<AMachinePort> HeldPlug;
 
 };

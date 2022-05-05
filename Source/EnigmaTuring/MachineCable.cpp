@@ -14,14 +14,18 @@ AMachineCable::AMachineCable()
 
 void AMachineCable::BeginPlay()
 {
-	StartCableEndPiece->OnInteract.BindSP(this, &AMachineCable::ConnectCable);
+	StartPlug = NewObject<ACablePlug>(this, EndPieceClass);
+	//StartPlug->OnInteract.BindSP(this, &AMachineCable::ConnectCable);
+
+	EndPlug = NewObject<ACablePlug>(this, EndPieceClass);
+	//EndPlug->OnInteract.BindSP(this, &AMachineCable::ConnectCable);
 }
 
-void AMachineCable::ConnectCable(AInteractableObject* EndPiece)
+void AMachineCable::ConnectCable(AInteractableObject* Plug)
 {
-	if (ACableEndPiece* CablePiece = Cast<ACableEndPiece>(EndPiece))
+	if (ACablePlug* CablePlug = Cast<ACablePlug>(Plug))
 	{
-		if (CablePiece == StartCableEndPiece)
+		if (CablePlug == Plug)
 		{
 
 		}

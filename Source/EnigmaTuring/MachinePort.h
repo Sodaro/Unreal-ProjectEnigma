@@ -4,14 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "InteractableObject.h"
-#include "MachinePlug.generated.h"
+#include "MachinePort.generated.h"
 
 class AMachineCable;
 /**
  * 
  */
 UCLASS()
-class ENIGMATURING_API AMachinePlug : public AInteractableObject
+class ENIGMATURING_API AMachinePort : public AInteractableObject
 {
 	GENERATED_BODY()
 	
@@ -32,8 +32,8 @@ public:
 		return Letter[0] - 'A';
 	}
 
-	bool HasConnectedPlug();
-	TWeakObjectPtr<AMachinePlug> GetConnectedPlug();
+	bool HasConnectedPort();
+	TWeakObjectPtr<AMachinePort> GetConnectedPort();
 	void DisconnectPlug();
-	void ConnectPlug(TWeakObjectPtr<AMachinePlug> Plug);
+	void ConnectPlug(TWeakObjectPtr<AMachinePort> Port);
 };

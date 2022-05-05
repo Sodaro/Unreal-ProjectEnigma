@@ -7,8 +7,8 @@
 #include "MachineCable.generated.h"
 
 class UCableComponent;
-class AMachinePlug;
-class ACableEndPiece;
+class AMachinePort;
+class ACablePlug;
 class AInteractableObject;
 
 UCLASS()
@@ -28,15 +28,18 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	UCableComponent* CableComp = nullptr;
 
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<ACablePlug> EndPieceClass;
+
 	UPROPERTY()
-	AMachinePlug* StartMachinePlug = nullptr;
+	AMachinePort* StartMachinePort = nullptr;
 	
 	UPROPERTY()
-	ACableEndPiece* StartCableEndPiece = nullptr;
+	ACablePlug* StartPlug = nullptr;
 
 	UPROPERTY()
-	AMachinePlug* EndMachinePlug = nullptr;
+	AMachinePort* EndMachinePort = nullptr;
 
 	UPROPERTY()
-	ACableEndPiece* EndCableEndPiece = nullptr;
+	ACablePlug* EndPlug = nullptr;
 };

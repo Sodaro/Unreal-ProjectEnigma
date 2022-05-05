@@ -7,7 +7,7 @@
 #include "CableEndPiece.generated.h"
 
 UCLASS()
-class ENIGMATURING_API ACableEndPiece : public AInteractableObject
+class ENIGMATURING_API ACablePlug : public AInteractableObject
 {
 	GENERATED_BODY()
 	

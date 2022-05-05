@@ -2,7 +2,7 @@
 #include "RotorWheel.h"
 #include "MachineKey.h"
 #include "MachineLamp.h"
-#include "MachinePlug.h"
+#include "MachinePort.h"
 #include "MachineTextOutput.h"
 
 void AEnigmaMachine::BeginPlay()
@@ -37,9 +37,9 @@ int32 AEnigmaMachine::EncodeLetter(int32 AlphabetIndex)
 	FString Key = "";
 	Key.AppendChar((TCHAR)(AlphabetIndex + 'A'));
 	
-	if (LetterComponents[Key].Plug->HasConnectedPlug())
+	if (LetterComponents[Key].Port->HasConnectedPort())
 	{
-		AlphabetIndex = LetterComponents[Key].Plug->GetConnectedPlug()->GetLetterIndex();
+		AlphabetIndex = LetterComponents[Key].Port->GetConnectedPort()->GetLetterIndex();
 	}
 
 	RotorWheels[0]->Rotate();
@@ -61,9 +61,9 @@ int32 AEnigmaMachine::EncodeLetter(int32 AlphabetIndex)
 	}
 	Key = "";
 	Key.AppendChar(Letter);
-	if (LetterComponents[Key].Plug->HasConnectedPlug())
+	if (LetterComponents[Key].Port->HasConnectedPort())
 	{
-		AlphabetIndex = LetterComponents[Key].Plug->GetConnectedPlug()->GetLetterIndex();
+		AlphabetIndex = LetterComponents[Key].Port->GetConnectedPort()->GetLetterIndex();
 		Letter = (TCHAR)(AlphabetIndex + 'A');
 	}
 	

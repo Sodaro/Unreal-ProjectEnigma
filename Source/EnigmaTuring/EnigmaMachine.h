@@ -9,7 +9,7 @@ class ARotorWheel;
 
 class AMachineLamp;
 class AMachineKey;
-class AMachinePlug;
+class AMachinePort;
 
 class UMachineTextOutput;
 
@@ -31,7 +31,7 @@ struct FLetterComponents
 	UPROPERTY(EditInstanceOnly)
 	AMachineKey* Key;
 	UPROPERTY(EditInstanceOnly)
-	AMachinePlug* Plug;
+	AMachinePort* Port;
 };
 
 UCLASS()

@@ -5,7 +5,7 @@
 #include "InteractableObject.h"
 #include "EnigmaMachine.h"
 #include "Kismet/GameplayStatics.h"
-#include "MachinePlug.h"
+#include "MachinePort.h"
 
 APlayerCharacter::APlayerCharacter()
 {
@@ -79,12 +79,12 @@ void APlayerCharacter::Interact()
 	}
 
 	HoveredInteractable->Interact();
-	if (HoveredInteractable->IsA<AMachinePlug>() == false)
+	if (HoveredInteractable->IsA<AMachinePort>() == false)
 	{
 		return;
 	}
 
-	AMachinePlug* ClickedPlug = Cast<AMachinePlug>(HoveredInteractable);
+	AMachinePort* ClickedPlug = Cast<AMachinePort>(HoveredInteractable);
 	if (HeldPlug == nullptr)
 		HeldPlug = ClickedPlug;
 	else
