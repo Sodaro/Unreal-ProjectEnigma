@@ -21,6 +21,7 @@ class ENIGMATURING_API APlayerCharacter : public APawn
 	void DoTrace();
 
 	bool LoggingEnabled = true;
+	float HoldOffset = 0;
 public:
 	// Sets default values for this pawn's properties
 	APlayerCharacter();

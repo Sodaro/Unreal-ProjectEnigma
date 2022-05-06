@@ -72,7 +72,7 @@ void APlayerCharacter::Tick(float DeltaTime)
 
 	if (HeldPlug != nullptr)
 	{
-		HeldPlug.Get()->SetActorLocation(GetActorLocation() + Camera->GetRelativeLocation() + Camera->GetForwardVector() * 50.f);
+		HeldPlug.Get()->SetActorLocation(GetActorLocation() + Camera->GetRelativeLocation() + Camera->GetForwardVector() * HoldOffset);
 	}
 }
 
@@ -91,7 +91,11 @@ void APlayerCharacter::Interact()
 
 	AMachineCablePlug* ClickedPlug = Cast<AMachineCablePlug>(HoveredInteractable);
 	if (HeldPlug == nullptr)
+	{
 		HeldPlug = ClickedPlug;
+		HoldOffset = FVector::Dist(GetActorLocation() + Camera->GetRelativeLocation(), ClickedPlug->GetActorLocation());
+	}
+		
 	else
 	{
 		HeldPlug = nullptr;
