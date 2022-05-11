@@ -22,5 +22,7 @@ In this project I set out to create an Enigma machine, with the additional goal 
 - Full Player movement
 - Ability to swap out rotors with different configs during play
 
+Showcase video: https://imgur.com/a/GMX6rfF (V1 without plugboard)
+
 Used Assets:
 Julio Juarez - Polar Sci-Fi Facility: https://www.unrealengine.com/marketplace/en-US/product/polar-sci-fi-facility
