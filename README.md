@@ -3,6 +3,9 @@
 In this project I set out to create an Enigma machine, with the additional goal of having it be a "phyiscal" device in the game world.
 ## Implemented:
 - Machine:
+  - Input 
+    - "Physical" QWERTZ Keyboard (Mouse interaction)
+    - Player keyboard (keys A-Z)
   - Rotors (config chosen in editor)
     - Ring setting and Initial offset can be changed through player interaction
   - Reflector
