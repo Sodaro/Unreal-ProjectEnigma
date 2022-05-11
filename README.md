@@ -23,6 +23,9 @@ In this project I set out to create an Enigma machine, with the additional goal 
 - Ability to swap out rotors with different configs during play
 
 Showcase video: https://imgur.com/a/GMX6rfF (V1 without plugboard)
+![enigmamachine](https://user-images.githubusercontent.com/37345736/167949053-8c15c2ea-f8d5-40e8-94fa-a5fff436c9fa.png)
+![enigma_environment](https://user-images.githubusercontent.com/37345736/167949076-5f1badc8-23cb-4e64-954c-71f762a92d45.png)
 
-Used Assets:
+
+Used Environment Assets:
 Julio Juarez - Polar Sci-Fi Facility: https://www.unrealengine.com/marketplace/en-US/product/polar-sci-fi-facility
